@@ -42,7 +42,10 @@ helix/
 ## Decisions
 - **Infrastructure:** No Docker — run with `start.sh` or `start.ps1`.
 - **UI/UX:** Dark theme (#0A0F1E background, #00D4FF accent). Font: Inter.
+- **Data Strategy:** Data pipeline established, `synthetic_outbreak_data.csv` created.
+- **Database:** SQLite DB with 4 tables initialized and seeded.
+- **Datasets:** WHO GHO API (primary), synthetic fallback (secondary).
 
 ## Phase Tracking
-**Current Phase:** Phase 1 complete
-**Next Phase:** Phase 2 — Historical Data Pipeline + Privacy Layer
+**Current Phase:** Phase 2 complete
+**Next Phase:** Phase 3

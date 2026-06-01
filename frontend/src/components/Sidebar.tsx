@@ -1,7 +1,11 @@
 import React from 'react';
+import { useOutbreakData } from '../hooks/useOutbreakData';
 
 const Sidebar = () => {
   const links = ['Dashboard', 'Outbreak Map', 'Alerts', 'Personal Risk', 'Health Twin', 'Symptom Checker'];
+  const { data, loading, error } = useOutbreakData();
+
+  const today = new Date().toLocaleDateString();
 
   return (
     <div className="h-screen w-64 bg-[#0A0F1E] border-r border-gray-800 text-white flex flex-col">
@@ -19,8 +23,21 @@ const Sidebar = () => {
           </a>
         ))}
       </nav>
-      <div className="p-4 text-xs text-gray-500 text-center">
-        v1.0.0 (Phase 1)
+      
+      {/* Data Status Footer */}
+      <div className="p-4 border-t border-gray-800 text-xs text-gray-500 flex flex-col space-y-1">
+        <div className="flex items-center space-x-2">
+          <div className={`w-2 h-2 rounded-full ${loading ? 'bg-yellow-500 animate-pulse' : error ? 'bg-red-500' : 'bg-green-500'}`}></div>
+          <span>
+            {loading ? 'Loading data...' : error ? 'Data Error' : `${data.length} records loaded`}
+          </span>
+        </div>
+        <div className="text-gray-600">
+          Last updated: {today}
+        </div>
+        <div className="text-center mt-2 text-[10px]">
+          v1.0.0 (Phase 2)
+        </div>
       </div>
     </div>
   );
