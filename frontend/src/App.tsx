@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import OutbreakMap from './pages/OutbreakMap';
 import SymptomChecker from './pages/SymptomChecker';
+import Alerts from './pages/Alerts';
 
 function App() {
   const [launched, setLaunched] = useState(false);
@@ -34,7 +35,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/map" element={<OutbreakMap />} />
         <Route path="/symptoms" element={<SymptomChecker />} />
-        <Route path="/alerts" element={<div className="text-gray-400 text-center mt-20 text-lg">🔔 Alert System — Coming in Phase 8</div>} />
+        <Route path="/alerts" element={<Alerts />} />
         <Route path="/risk" element={<div className="text-gray-400 text-center mt-20 text-lg">🧬 Personal Risk Assessment — Coming Soon</div>} />
         <Route path="/twin" element={<div className="text-gray-400 text-center mt-20 text-lg">🫀 Digital Health Twin — Coming Soon</div>} />
       </Routes>

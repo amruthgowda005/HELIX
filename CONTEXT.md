@@ -82,12 +82,13 @@ helix/
 - **Symptom Intelligence:** Symptom reporting API with hashlib region anonymization. DBSCAN clustering detects regional symptom groupings (e.g. Cholera in Mumbai), Z-score alerts active spikes, and a rule-based + ML classifier maps symptoms to likely disease prognosis.
 - **Geo-Spatial Map:** Interactive Leaflet map with CartoDB Dark Matter tiles. CircleMarkers for 10 Indian cities, color-coded by risk score (green/yellow/orange/red). Disease filter dropdown and pulsing "LIVE DATA FEED" badge. Popups show city details, active cases, dominant pathogen, risk index, and 7-day trend.
 - **Dashboard:** Full dark-theme dashboard with 4 KPI cards (Total Active Cases, High-Risk Zones, Active Alerts, Prediction Accuracy), Pathogen Outbreak Waveforms area chart, Climate-Driven Risk Grid table, and embedded EnvironmentalPanel, SymptomTrends, and PredictionChart widgets. 30-second auto-refresh with skeleton loaders.
-- **Navigation:** react-router-dom with BrowserRouter. Routes: `/` (Dashboard), `/map` (OutbreakMap), `/symptoms` (SymptomChecker). Active route highlighted in sidebar with electric blue left border.
-- **API Endpoints:** `/api/dashboard/summary` returns all KPI data in a single call (total_active_cases, high_risk_regions, alerts_today, prediction_accuracy, region_risk_matrix with lat/lng for map plotting).
+- **Early Warning Alert System:** Alert Engine with 4 severity levels (CRITICAL, HIGH, MEDIUM, LOW) and trigger rules based on risk score, case counts, and Z-score spikes. Background task runs every 5 minutes across all regions × diseases. Notification service handles in-app DB logging and mock email generation. Notification bell component in header with pulsing unread badge.
+- **Navigation:** react-router-dom with BrowserRouter. Routes: `/` (Dashboard), `/map` (OutbreakMap), `/symptoms` (SymptomChecker), `/alerts` (Alerts Dashboard). Active route highlighted in sidebar with electric blue left border.
+- **API Endpoints:** `/api/dashboard/summary` returns all KPI data. `/api/alerts/*` endpoints provide active alerts, paginated history, resolution, and notification polling.
 - **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*`, `/api/symptoms/*`, and `/api/dashboard/*` routes.
 - **Charting:** Recharts with historical + forecast lines, confidence bands, RMSE badges, real-time symptom trend surveillance, and pathogen waveform area charts.
 - **Training:** `train_all.py` orchestrator script created for batch training all models.
 
 ## Phase Tracking
-**Current Phase:** Phase 7 complete
-**Next Phase:** Phase 8 — Early Warning Alert System
+**Current Phase:** Phase 8 complete
+**Next Phase:** Phase 9 — Personal Risk Prediction + AI Symptom Checker

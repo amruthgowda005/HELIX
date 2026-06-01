@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float, Date, Boolean
+from sqlalchemy import Column, Integer, String, Float, Date, DateTime, Boolean
+from datetime import datetime
 from .database import Base
 
 class OutbreakRecord(Base):
@@ -34,8 +35,20 @@ class AlertLog(Base):
     date = Column(Date, index=True)
     region = Column(String, index=True)
     disease = Column(String)
-    severity = Column(String)
+    severity = Column(String)          # CRITICAL | HIGH | MEDIUM | LOW
     message = Column(String)
+    resolved = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class NotificationLog(Base):
+    __tablename__ = "notification_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    alert_id = Column(Integer, index=True)
+    channel = Column(String)           # in_app | email_mock
+    recipient = Column(String, default="system")
+    message = Column(String)
+    read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class UserSymptomReport(Base):
     __tablename__ = "symptom_reports"
