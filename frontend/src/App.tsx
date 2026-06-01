@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Layout from './components/Layout';
 import PredictionChart from './components/PredictionChart';
 import ModelMetricsCard from './components/ModelMetricsCard';
+import EnvironmentalPanel from './components/EnvironmentalPanel';
 
 function App() {
   const [launched, setLaunched] = useState(false);
@@ -44,6 +45,9 @@ function App() {
             <p className="text-3xl font-bold text-green-400">Online</p>
           </div>
         </div>
+
+        {/* Environmental Risk Panel */}
+        <EnvironmentalPanel />
 
         {/* Prediction Chart */}
         <PredictionChart />

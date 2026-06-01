@@ -118,3 +118,33 @@ def get_model_metrics():
         return list(metrics.values())
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/environment/weather")
+def get_current_weather(city: str = Query(...)):
+    """Fetch current weather for a city."""
+    from services.weather_service import WeatherService
+    try:
+        svc = WeatherService()
+        return svc.get_current(city)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/environment/correlations")
+def get_weather_correlations(disease: str = Query(...), city: str = Query(...)):
+    """Get Pearson/Spearman correlations between disease spread and weather."""
+    from services.correlation_engine import CorrelationEngine
+    try:
+        engine = CorrelationEngine()
+        return {"correlations": engine.compute_correlations(disease, city)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/environment/risk-multiplier")
+def get_weather_risk_multiplier(disease: str = Query(...), city: str = Query(...)):
+    """Get weather-based risk multiplier for outbreak."""
+    from services.correlation_engine import CorrelationEngine
+    try:
+        engine = CorrelationEngine()
+        return engine.get_risk_multiplier(disease, city)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
