@@ -63,3 +63,18 @@ async def get_seasonal(disease: str):
         raise HTTPException(status_code=503, detail="ML service unavailable")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/models/metrics")
+async def get_model_metrics():
+    """Proxy to ML service /api/models/metrics."""
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{ML_SERVICE_URL}/api/models/metrics"
+            )
+            response.raise_for_status()
+            return response.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="ML service unavailable")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

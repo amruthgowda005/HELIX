@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from './components/Layout';
 import PredictionChart from './components/PredictionChart';
+import ModelMetricsCard from './components/ModelMetricsCard';
 
 function App() {
   const [launched, setLaunched] = useState(false);
@@ -46,6 +47,9 @@ function App() {
 
         {/* Prediction Chart */}
         <PredictionChart />
+        
+        {/* Model Metrics */}
+        <ModelMetricsCard />
       </div>
     </Layout>
   );

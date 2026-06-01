@@ -23,29 +23,48 @@ class PredictionService:
             model = ProphetForecast().fit(disease, region)
         return model
 
+    def _get_lstm(self, disease: str, region: str):
+        from .lstm_model import LSTMForecast
+        model = LSTMForecast.load(disease, region)
+        if model is None:
+            model = LSTMForecast().fit(disease, region)
+        return model
+
     def run_ensemble(self, disease: str, region: str, steps: int = 12) -> dict:
-        """Run ARIMA + Prophet and average their predictions."""
+        """Run ARIMA + Prophet + LSTM and compute weighted average."""
         arima = self._get_arima(disease, region)
         prophet = self._get_prophet(disease, region)
+        lstm = self._get_lstm(disease, region)
 
         arima_pred = arima.predict(steps=steps)
         prophet_pred = prophet.predict(periods=steps)
+        lstm_pred = lstm.predict(steps=steps)
 
         # Align dates (use ARIMA dates as reference)
         dates = arima_pred["dates"]
+        
+        # Weights: ARIMA 30%, Prophet 30%, LSTM 40%
+        w_arima, w_prophet, w_lstm = 0.3, 0.3, 0.4
+        
         ensemble_forecast = [
-            round((a + b) / 2, 1)
-            for a, b in zip(arima_pred["forecast"], prophet_pred["forecast"])
+            round((a * w_arima) + (p * w_prophet) + (l * w_lstm), 1)
+            for a, p, l in zip(arima_pred["forecast"], prophet_pred["forecast"], lstm_pred["forecast"])
         ]
         ensemble_lower = [
-            round((a + b) / 2, 1)
-            for a, b in zip(arima_pred["lower"], prophet_pred["lower"])
+            round((a * w_arima) + (p * w_prophet) + (l * w_lstm), 1)
+            for a, p, l in zip(arima_pred["lower"], prophet_pred["lower"], lstm_pred["lower"])
         ]
         ensemble_upper = [
-            round((a + b) / 2, 1)
-            for a, b in zip(arima_pred["upper"], prophet_pred["upper"])
+            round((a * w_arima) + (p * w_prophet) + (l * w_lstm), 1)
+            for a, p, l in zip(arima_pred["upper"], prophet_pred["upper"], lstm_pred["upper"])
         ]
-        avg_rmse = round((arima_pred.get("rmse", 0) + prophet_pred.get("rmse", 0)) / 2, 2)
+        
+        # Weighted RMSE
+        avg_rmse = round(
+            (arima_pred.get("rmse", 0) * w_arima) + 
+            (prophet_pred.get("rmse", 0) * w_prophet) + 
+            (lstm_pred.get("rmse", 0) * w_lstm), 2
+        )
 
         return {
             "model": "ensemble",
@@ -57,7 +76,8 @@ class PredictionService:
             "upper": ensemble_upper,
             "rmse": avg_rmse,
             "arima_rmse": arima_pred.get("rmse"),
-            "prophet_rmse": prophet_pred.get("rmse")
+            "prophet_rmse": prophet_pred.get("rmse"),
+            "lstm_rmse": lstm_pred.get("rmse")
         }
 
     def run_single(self, disease: str, region: str, model: str = "ensemble", steps: int = 12) -> dict:
@@ -72,6 +92,13 @@ class PredictionService:
             prophet = self._get_prophet(disease, region)
             result = prophet.predict(periods=steps)
             result["model"] = "prophet"
+            result["disease"] = disease
+            result["region"] = region
+            return result
+        elif model == "lstm":
+            lstm = self._get_lstm(disease, region)
+            result = lstm.predict(steps=steps)
+            result["model"] = "lstm"
             result["disease"] = disease
             result["region"] = region
             return result

@@ -7,7 +7,7 @@ import {
 const DISEASES = ['Dengue', 'Malaria', 'Cholera', 'Influenza', 'COVID-19'];
 const REGIONS = ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Kerala',
   'Gujarat', 'Uttar Pradesh', 'West Bengal', 'Rajasthan', 'Telangana'];
-const MODELS = ['ensemble', 'arima', 'prophet'];
+const MODELS = ['ensemble', 'arima', 'prophet', 'lstm'];
 
 interface ForecastData {
   dates: string[];
@@ -17,6 +17,7 @@ interface ForecastData {
   rmse?: number;
   arima_rmse?: number;
   prophet_rmse?: number;
+  lstm_rmse?: number;
   model?: string;
 }
 
@@ -237,6 +238,14 @@ const PredictionChart: React.FC = () => {
                   <span className="text-gray-400 text-xs">Prophet RMSE:</span>
                   <span className={`text-xs font-bold ${getRmseColor(forecastData.prophet_rmse)}`}>
                     {forecastData.prophet_rmse.toFixed(2)}
+                  </span>
+                </div>
+              )}
+              {forecastData.lstm_rmse !== undefined && (
+                <div className="flex items-center gap-2 bg-gray-800 rounded-lg px-3 py-2">
+                  <span className="text-gray-400 text-xs">LSTM RMSE:</span>
+                  <span className={`text-xs font-bold ${getRmseColor(forecastData.lstm_rmse)}`}>
+                    {forecastData.lstm_rmse.toFixed(2)}
                   </span>
                 </div>
               )}

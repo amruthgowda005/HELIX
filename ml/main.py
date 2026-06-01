@@ -31,7 +31,7 @@ def get_prediction_service():
 class PredictRequest(BaseModel):
     disease: str
     region: str
-    model: Optional[str] = "ensemble"  # "arima" | "prophet" | "ensemble"
+    model: Optional[str] = "ensemble"  # "arima" | "prophet" | "lstm" | "ensemble"
     steps: Optional[int] = 12
 
 
@@ -85,5 +85,36 @@ def get_model_statuses():
     try:
         svc = get_prediction_service()
         return {"models": svc.get_model_statuses()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/models/metrics")
+def get_model_metrics():
+    """Return accuracy table for all trained models."""
+    try:
+        svc = get_prediction_service()
+        statuses = svc.get_model_statuses()
+        
+        # Aggregate metrics by disease/region
+        metrics = {}
+        for status in statuses:
+            key = f"{status['disease']}_{status['region']}"
+            if key not in metrics:
+                metrics[key] = {
+                    "disease": status['disease'],
+                    "region": status['region'],
+                    "arima": None,
+                    "prophet": None,
+                    "lstm": None
+                }
+            
+            if status['file'].startswith('arima'):
+                metrics[key]['arima'] = status['rmse']
+            elif status['file'].startswith('prophet'):
+                metrics[key]['prophet'] = status['rmse']
+            elif status['file'].startswith('scaler'):
+                metrics[key]['lstm'] = status['rmse']
+                
+        return list(metrics.values())
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
