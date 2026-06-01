@@ -202,6 +202,28 @@ def get_symptom_spikes():
                     "dominant_symptom": "fever" if rg == "Delhi" else "diarrhea" if rg == "Mumbai" else "cough",
                     "status": "CRITICAL" if rg == "Delhi" else "WARNING"
                 })
-        return {"spikes": spikes}
+@app.post("/api/personal/risk-assessment")
+def get_personal_risk_assessment(body: dict):
+    """Return all 3 risk scores based on user health profile."""
+    from services.personal_risk_service import PersonalRiskService
+    try:
+        svc = PersonalRiskService()
+        return svc.predict_all(body)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/personal/disease-risk")
+def get_personal_disease_risk(body: dict):
+    """Return single condition risk score."""
+    from services.personal_risk_service import PersonalRiskService
+    try:
+        condition = body.get("condition")
+        health_data = body.get("health_data", {})
+        svc = PersonalRiskService()
+        res = svc.predict_all(health_data)
+        if condition in res:
+            return res[condition]
+        raise ValueError("Invalid condition")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+

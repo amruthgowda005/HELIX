@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PredictionChart from '../components/PredictionChart';
 import EnvironmentalPanel from '../components/EnvironmentalPanel';
 import SymptomTrends from '../components/SymptomTrends';
+import RiskSummaryCard from '../components/RiskSummaryCard';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 interface SummaryData {
@@ -161,9 +162,11 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Grid widgets */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {/* Risk Grid Grid */}
-        <div className="bg-[#0D1421] border border-gray-800 p-6 rounded-xl overflow-x-auto">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="xl:col-span-1">
+          <RiskSummaryCard />
+        </div>
+        <div className="xl:col-span-2 bg-[#0D1421] border border-gray-800 p-6 rounded-xl overflow-x-auto">
           <div className="mb-4">
             <h2 className="text-lg font-bold text-white">⚡ Climate-Driven Pathogen Risk Grid</h2>
             <p className="text-xs text-gray-500 mt-0.5">Calculated relative disease load matrix per region.</p>
@@ -197,7 +200,9 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Environmental risk */}
-        <EnvironmentalPanel />
+        <div className="xl:col-span-3">
+          <EnvironmentalPanel />
+        </div>
       </div>
 
       {/* Surveillance and Predictions */}

@@ -83,12 +83,14 @@ helix/
 - **Geo-Spatial Map:** Interactive Leaflet map with CartoDB Dark Matter tiles. CircleMarkers for 10 Indian cities, color-coded by risk score (green/yellow/orange/red). Disease filter dropdown and pulsing "LIVE DATA FEED" badge. Popups show city details, active cases, dominant pathogen, risk index, and 7-day trend.
 - **Dashboard:** Full dark-theme dashboard with 4 KPI cards (Total Active Cases, High-Risk Zones, Active Alerts, Prediction Accuracy), Pathogen Outbreak Waveforms area chart, Climate-Driven Risk Grid table, and embedded EnvironmentalPanel, SymptomTrends, and PredictionChart widgets. 30-second auto-refresh with skeleton loaders.
 - **Early Warning Alert System:** Alert Engine with 4 severity levels (CRITICAL, HIGH, MEDIUM, LOW) and trigger rules based on risk score, case counts, and Z-score spikes. Background task runs every 5 minutes across all regions × diseases. Notification service handles in-app DB logging and mock email generation. Notification bell component in header with pulsing unread badge.
-- **Navigation:** react-router-dom with BrowserRouter. Routes: `/` (Dashboard), `/map` (OutbreakMap), `/symptoms` (SymptomChecker), `/alerts` (Alerts Dashboard). Active route highlighted in sidebar with electric blue left border.
-- **API Endpoints:** `/api/dashboard/summary` returns all KPI data. `/api/alerts/*` endpoints provide active alerts, paginated history, resolution, and notification polling.
-- **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*`, `/api/symptoms/*`, and `/api/dashboard/*` routes.
+- **Personal Risk Engine:** 3 predictive ML models (Logistic Regression for Diabetes, Random Forest for Heart Disease, Gradient Boosting for Stroke) trained on synthetic cohorts. Computes individualized 0-100% risk scoring.
+- **Personal Risk Dashboard:** 5-step interactive assessment wizard (Vitals, Lifestyle, Family History). Visualizes risk via dynamic semicircle risk gauge components and risk factor breakdowns. Integrated RiskSummaryCard on main dashboard.
+- **Navigation:** react-router-dom with BrowserRouter. Routes: `/` (Dashboard), `/map` (OutbreakMap), `/symptoms` (SymptomChecker), `/alerts` (Alerts Dashboard), `/risk` (PersonalRisk). Active route highlighted in sidebar with electric blue left border.
+- **API Endpoints:** `/api/dashboard/summary` returns all KPI data. `/api/alerts/*` endpoints provide active alerts, paginated history, resolution, and notification polling. `/api/personal/*` endpoints proxy ML personal risk assessments.
+- **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*`, `/api/symptoms/*`, `/api/dashboard/*`, and `/api/personal/*` routes.
 - **Charting:** Recharts with historical + forecast lines, confidence bands, RMSE badges, real-time symptom trend surveillance, and pathogen waveform area charts.
 - **Training:** `train_all.py` orchestrator script created for batch training all models.
 
 ## Phase Tracking
-**Current Phase:** Phase 8 complete
-**Next Phase:** Phase 9 — Personal Risk Prediction + AI Symptom Checker
+**Current Phase:** Phase 9 complete
+**Next Phase:** Phase 10 — Digital Health Twin + Wearable Integration

@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
           Last updated: {today}
         </div>
         <div className="text-center mt-2 text-[10px]">
-          v1.0.0 (Phase 7)
+          v1.0.0 (Phase 9)
         </div>
       </div>
     </div>

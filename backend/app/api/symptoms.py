@@ -32,6 +32,16 @@ async def report_symptoms(body: dict, db: Session = Depends(get_db)):
             resp.raise_for_status()
             ml_res = resp.json()
             
+            # If age and vitals are provided, get personal risk
+            personal_risk = None
+            if "age" in body:
+                risk_resp = await client.post(
+                    f"{ML_SERVICE_URL}/api/personal/risk-assessment",
+                    json=body
+                )
+                if risk_resp.status_code == 200:
+                    personal_risk = risk_resp.json()
+            
         estimated_disease = ml_res.get("disease", "Unknown")
         confidence = ml_res.get("confidence", 0.5)
         
@@ -42,6 +52,12 @@ async def report_symptoms(body: dict, db: Session = Depends(get_db)):
         elif risk_score > 5.0: risk_level = "high"
         elif risk_score > 3.0: risk_level = "medium"
         
+        # Triage scoring based on severity
+        triage = "Self-Care"
+        if severity >= 5: triage = "Critical"
+        elif severity == 4: triage = "Urgent"
+        elif severity == 3: triage = "Non-Urgent"
+
         # Save to database
         db_report = UserSymptomReport(
             date=datetime.now().date(),
@@ -53,12 +69,17 @@ async def report_symptoms(body: dict, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(db_report)
         
-        return {
+        result = {
             "report_id": db_report.id,
             "risk_level": risk_level,
             "estimated_disease": estimated_disease,
-            "confidence": confidence
+            "confidence": confidence,
+            "triage": triage
         }
+        if personal_risk:
+            result["personal_risk"] = personal_risk
+            
+        return result
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
