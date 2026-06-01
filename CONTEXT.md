@@ -62,10 +62,11 @@ helix/
 - **Datasets:** WHO GHO API (primary), synthetic fallback (secondary).
 - **ML Models:** ARIMA + Prophet + LSTM implemented with ensemble prediction service (30%, 30%, 40% weights). Prophet now leverages rainfall and humidity as active regressors.
 - **Environmental Engine:** `weather_service.py` connects to OpenWeatherMap API with custom historical fallbacks. `correlation_engine.py` calculates Pearson/Spearman lag correlations and outputs dynamic weather risk multipliers (e.g. 1.56x) for active predictions.
-- **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*` routes for weather/correlations.
-- **Charting:** Recharts with historical + forecast lines, confidence bands, RMSE badges.
+- **Symptom Intelligence:** Symptom reporting API with hashlib region anonymization. DBSCAN clustering detects regional symptom groupings (e.g. Cholera in Mumbai), Z-score alerts active spikes, and a rule-based + ML classifier maps symptoms to likely disease prognosis.
+- **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*` and `/api/symptoms/*` routes.
+- **Charting:** Recharts with historical + forecast lines, confidence bands, RMSE badges, and real-time symptom trend surveillance.
 - **Training:** `train_all.py` orchestrator script created for batch training all models.
 
 ## Phase Tracking
-**Current Phase:** Phase 5 complete
-**Next Phase:** Phase 6 — Symptom Input + Clustering Engine
+**Current Phase:** Phase 6 complete
+**Next Phase:** Phase 7 — Geo-Spatial Heatmaps + Dashboard

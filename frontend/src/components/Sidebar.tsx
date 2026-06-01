@@ -1,7 +1,12 @@
 import React from 'react';
 import { useOutbreakData } from '../hooks/useOutbreakData';
 
-const Sidebar = () => {
+interface SidebarProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const links = ['Dashboard', 'Outbreak Map', 'Alerts', 'Personal Risk', 'Health Twin', 'Symptom Checker'];
   const { total, loading, error } = useOutbreakData();
 
@@ -14,13 +19,17 @@ const Sidebar = () => {
       </div>
       <nav className="flex-1 px-4 space-y-2 mt-4">
         {links.map((link) => (
-          <a
+          <button
             key={link}
-            href="#"
-            className="block px-4 py-2 rounded transition-colors hover:bg-gray-800 hover:text-[#00D4FF]"
+            onClick={() => setActiveTab(link)}
+            className={`block w-full text-left px-4 py-2 rounded transition-colors ${
+              activeTab === link 
+                ? 'bg-[#00D4FF]/10 text-[#00D4FF] border-l-2 border-[#00D4FF] font-semibold' 
+                : 'hover:bg-gray-800 hover:text-[#00D4FF] text-gray-400'
+            }`}
           >
             {link}
-          </a>
+          </button>
         ))}
       </nav>
       

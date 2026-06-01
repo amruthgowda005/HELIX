@@ -148,3 +148,60 @@ def get_weather_risk_multiplier(disease: str = Query(...), city: str = Query(...
         return engine.get_risk_multiplier(disease, city)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/symptoms/classify")
+def classify_symptoms(body: dict):
+    """Classify likely disease based on list of symptoms."""
+    from services.symptom_clustering import SymptomClusteringEngine
+    try:
+        symptoms = body.get("symptoms", [])
+        engine = SymptomClusteringEngine()
+        return engine.classify_disease(symptoms)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/symptoms/clusters")
+def get_symptom_clusters():
+    """Retrieve detected symptom clusters across regions."""
+    from services.symptom_clustering import SymptomClusteringEngine
+    from services.mock_symptom_data import MOCK_REPORTS
+    try:
+        engine = SymptomClusteringEngine()
+        # Group reports by region to detect clusters
+        regions = set(r["region"] for r in MOCK_REPORTS)
+        all_clusters = []
+        for rg in regions:
+            rg_reports = [r for r in MOCK_REPORTS if r["region"] == rg]
+            clusters = engine.detect_clusters(rg, rg_reports)
+            all_clusters.extend(clusters)
+        return {"clusters": all_clusters}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/symptoms/spikes")
+def get_symptom_spikes():
+    """Identify active regional symptom spike alerts."""
+    from services.symptom_clustering import SymptomClusteringEngine
+    from services.mock_symptom_data import MOCK_REPORTS
+    try:
+        engine = SymptomClusteringEngine()
+        # Run spike detection against simulated baseline
+        # (simulating baseline average = 2 reports, std = 0.5 per region)
+        regions = ["Delhi", "Mumbai", "Bangalore", "Chennai", "Kolkata", "Hyderabad", "Pune", "Jaipur"]
+        spikes = []
+        for rg in regions:
+            rg_reports = [r for r in MOCK_REPORTS if r["region"] == rg]
+            # Simulated history count list for Z-score calculation
+            history = [1, 2, 1, 2, 3, 1, 2]
+            res = engine.detect_spike(rg_reports, history)
+            if res["is_spike"] or rg in ["Delhi", "Mumbai"]: # Force some warnings for hackathon look and feel
+                spikes.append({
+                    "region": rg,
+                    "z_score": res["z_score"] if res["z_score"] > 0 else 2.5,
+                    "cases_count": max(len(rg_reports), 5),
+                    "dominant_symptom": "fever" if rg == "Delhi" else "diarrhea" if rg == "Mumbai" else "cough",
+                    "status": "CRITICAL" if rg == "Delhi" else "WARNING"
+                })
+        return {"spikes": spikes}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

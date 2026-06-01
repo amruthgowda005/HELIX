@@ -3,9 +3,12 @@ import Layout from './components/Layout';
 import PredictionChart from './components/PredictionChart';
 import ModelMetricsCard from './components/ModelMetricsCard';
 import EnvironmentalPanel from './components/EnvironmentalPanel';
+import SymptomTrends from './components/SymptomTrends';
+import SymptomChecker from './pages/SymptomChecker';
 
 function App() {
   const [launched, setLaunched] = useState(false);
+  const [activeTab, setActiveTab] = useState('Dashboard');
 
   if (!launched) {
     return (
@@ -27,8 +30,19 @@ function App() {
     );
   }
 
+  // Render Symptom Checker page stand-alone without layout wrappers if navigated
+  if (activeTab === 'Symptom Checker') {
+    return (
+      <div className="bg-[#0A0F1E] min-h-screen text-white">
+        <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+          <SymptomChecker />
+        </Layout>
+      </div>
+    );
+  }
+
   return (
-    <Layout>
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
       <div className="space-y-6">
         {/* Status Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -48,6 +62,9 @@ function App() {
 
         {/* Environmental Risk Panel */}
         <EnvironmentalPanel />
+
+        {/* Real-Time Symptom Surveillance */}
+        <SymptomTrends />
 
         {/* Prediction Chart */}
         <PredictionChart />
