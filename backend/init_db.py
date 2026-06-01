@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sqlalchemy.orm import Session
 from app.models.database import engine, Base, SessionLocal
-from app.models.models import OutbreakRecord, AlertLog, NotificationLog, UserSymptomReport, EnvironmentalData  # noqa: F401 — ensure all tables are created
+from app.models.models import OutbreakRecord, AlertLog, NotificationLog, WearableReading, UserSymptomReport, EnvironmentalData  # noqa: F401
 
 def init_db():
     print("Creating database tables...")

@@ -3,6 +3,7 @@ import PredictionChart from '../components/PredictionChart';
 import EnvironmentalPanel from '../components/EnvironmentalPanel';
 import SymptomTrends from '../components/SymptomTrends';
 import RiskSummaryCard from '../components/RiskSummaryCard';
+import WearableVitalsWidget from '../components/WearableVitalsWidget';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 interface SummaryData {
@@ -163,8 +164,9 @@ const Dashboard: React.FC = () => {
 
       {/* Grid widgets */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-1">
+        <div className="xl:col-span-1 space-y-6">
           <RiskSummaryCard />
+          <WearableVitalsWidget />
         </div>
         <div className="xl:col-span-2 bg-[#0D1421] border border-gray-800 p-6 rounded-xl overflow-x-auto">
           <div className="mb-4">

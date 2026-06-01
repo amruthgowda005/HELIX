@@ -33,3 +33,31 @@ async def proxy_personal_disease_risk(body: dict):
             return resp.json()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/stroke-guard")
+async def proxy_stroke_guard(body: dict):
+    """Proxy request to ML service for stroke guard analysis."""
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.post(
+                f"{ML_SERVICE_URL}/api/personal/stroke-guard",
+                json=body
+            )
+            resp.raise_for_status()
+            return resp.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/health-twin")
+async def proxy_health_twin(body: dict):
+    """Proxy request to ML service for health twin trajectory."""
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.post(
+                f"{ML_SERVICE_URL}/api/personal/health-twin",
+                json=body
+            )
+            resp.raise_for_status()
+            return resp.json()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

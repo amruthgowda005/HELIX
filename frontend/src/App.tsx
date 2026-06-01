@@ -6,6 +6,7 @@ import OutbreakMap from './pages/OutbreakMap';
 import SymptomChecker from './pages/SymptomChecker';
 import Alerts from './pages/Alerts';
 import PersonalRisk from './pages/PersonalRisk';
+import HealthTwin from './pages/HealthTwin';
 
 function App() {
   const [launched, setLaunched] = useState(false);
@@ -38,7 +39,7 @@ function App() {
         <Route path="/symptoms" element={<SymptomChecker />} />
         <Route path="/alerts" element={<Alerts />} />
         <Route path="/risk" element={<PersonalRisk />} />
-        <Route path="/twin" element={<div className="text-gray-400 text-center mt-20 text-lg">🫀 Digital Health Twin — Coming Soon</div>} />
+        <Route path="/twin" element={<HealthTwin />} />
       </Routes>
     </Layout>
   );

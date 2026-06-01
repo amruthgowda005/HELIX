@@ -50,6 +50,16 @@ class NotificationLog(Base):
     read = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class WearableReading(Base):
+    __tablename__ = "wearable_readings"
+    id = Column(Integer, primary_key=True, index=True)
+    device_id = Column(String, index=True)
+    heart_rate = Column(Integer)
+    spo2 = Column(Integer)
+    steps = Column(Integer)
+    sleep_hours = Column(Float)
+    timestamp = Column(DateTime, default=datetime.utcnow, index=True)
+
 class UserSymptomReport(Base):
     __tablename__ = "symptom_reports"
     id = Column(Integer, primary_key=True, index=True)

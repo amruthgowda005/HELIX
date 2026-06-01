@@ -226,4 +226,22 @@ def get_personal_disease_risk(body: dict):
         raise ValueError("Invalid condition")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+@app.post("/api/personal/stroke-guard")
+def get_stroke_guard_assessment(body: dict):
+    """Run neural engine for stroke assessment."""
+    from services.stroke_guard import StrokeGuardEngine
+    try:
+        engine = StrokeGuardEngine()
+        return engine.assess_neurological_risk(body)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/personal/health-twin")
+def get_health_twin_trajectory(body: dict):
+    """Run health twin 5-year simulation."""
+    from services.health_twin import DigitalHealthTwin
+    try:
+        engine = DigitalHealthTwin()
+        return engine.get_trajectory(body)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
