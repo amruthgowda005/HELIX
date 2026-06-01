@@ -10,6 +10,8 @@ router = APIRouter()
 def get_outbreaks(
     disease: Optional[str] = None,
     region: Optional[str] = None,
+    limit: int = Query(default=100, le=1000),
+    offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db)
 ):
     query = db.query(OutbreakRecord)
@@ -17,8 +19,9 @@ def get_outbreaks(
         query = query.filter(OutbreakRecord.disease == disease)
     if region:
         query = query.filter(OutbreakRecord.region == region)
-        
-    return query.all()
+    total = query.count()
+    records = query.offset(offset).limit(limit).all()
+    return {"total": total, "offset": offset, "limit": limit, "records": records}
 
 @router.get("/diseases")
 def get_diseases(db: Session = Depends(get_db)):
