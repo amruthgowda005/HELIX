@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import data, predictions, environment, symptoms
+from app.api import data, predictions, environment, symptoms, dashboard
 import subprocess
 import sys
 
@@ -20,6 +20,7 @@ app.include_router(data.router, prefix="/api/data", tags=["data"])
 app.include_router(predictions.router, prefix="/api/predictions", tags=["predictions"])
 app.include_router(environment.router, prefix="/api/environment", tags=["environment"])
 app.include_router(symptoms.router, prefix="/api/symptoms", tags=["symptoms"])
+app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
 
 @app.on_event("startup")
 async def startup_event():

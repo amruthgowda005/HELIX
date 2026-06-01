@@ -1,14 +1,12 @@
 import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import PredictionChart from './components/PredictionChart';
-import ModelMetricsCard from './components/ModelMetricsCard';
-import EnvironmentalPanel from './components/EnvironmentalPanel';
-import SymptomTrends from './components/SymptomTrends';
+import Dashboard from './pages/Dashboard';
+import OutbreakMap from './pages/OutbreakMap';
 import SymptomChecker from './pages/SymptomChecker';
 
 function App() {
   const [launched, setLaunched] = useState(false);
-  const [activeTab, setActiveTab] = useState('Dashboard');
 
   if (!launched) {
     return (
@@ -18,7 +16,7 @@ function App() {
           HELIX
         </h1>
         <p className="text-xl text-gray-400 mb-12 max-w-lg text-center">
-          Predictive Biomedical & Public Health Intelligence
+          Predictive Biomedical &amp; Public Health Intelligence
         </p>
         <button
           onClick={() => setLaunched(true)}
@@ -30,48 +28,16 @@ function App() {
     );
   }
 
-  // Render Symptom Checker page stand-alone without layout wrappers if navigated
-  if (activeTab === 'Symptom Checker') {
-    return (
-      <div className="bg-[#0A0F1E] min-h-screen text-white">
-        <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-          <SymptomChecker />
-        </Layout>
-      </div>
-    );
-  }
-
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
-      <div className="space-y-6">
-        {/* Status Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-[#00D4FF]/50 transition-colors">
-            <h3 className="text-gray-400 text-sm mb-2">Global Risk Index</h3>
-            <p className="text-3xl font-bold text-[#00D4FF]">Moderate</p>
-          </div>
-          <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-red-500/50 transition-colors">
-            <h3 className="text-gray-400 text-sm mb-2">Active Alerts</h3>
-            <p className="text-3xl font-bold text-red-400">12</p>
-          </div>
-          <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-green-500/50 transition-colors">
-            <h3 className="text-gray-400 text-sm mb-2">System Status</h3>
-            <p className="text-3xl font-bold text-green-400">Online</p>
-          </div>
-        </div>
-
-        {/* Environmental Risk Panel */}
-        <EnvironmentalPanel />
-
-        {/* Real-Time Symptom Surveillance */}
-        <SymptomTrends />
-
-        {/* Prediction Chart */}
-        <PredictionChart />
-        
-        {/* Model Metrics */}
-        <ModelMetricsCard />
-      </div>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/map" element={<OutbreakMap />} />
+        <Route path="/symptoms" element={<SymptomChecker />} />
+        <Route path="/alerts" element={<div className="text-gray-400 text-center mt-20 text-lg">🔔 Alert System — Coming in Phase 8</div>} />
+        <Route path="/risk" element={<div className="text-gray-400 text-center mt-20 text-lg">🧬 Personal Risk Assessment — Coming Soon</div>} />
+        <Route path="/twin" element={<div className="text-gray-400 text-center mt-20 text-lg">🫀 Digital Health Twin — Coming Soon</div>} />
+      </Routes>
     </Layout>
   );
 }

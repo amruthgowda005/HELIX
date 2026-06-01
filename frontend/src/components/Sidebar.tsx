@@ -1,15 +1,21 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useOutbreakData } from '../hooks/useOutbreakData';
 
-interface SidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
-  const links = ['Dashboard', 'Outbreak Map', 'Alerts', 'Personal Risk', 'Health Twin', 'Symptom Checker'];
+const Sidebar: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const links = [
+    { label: 'Dashboard', path: '/' },
+    { label: 'Outbreak Map', path: '/map' },
+    { label: 'Symptom Checker', path: '/symptoms' },
+    { label: 'Alerts', path: '/alerts' },
+    { label: 'Personal Risk', path: '/risk' },
+    { label: 'Health Twin', path: '/twin' }
+  ];
+  
   const { total, loading, error } = useOutbreakData();
-
   const today = new Date().toLocaleDateString();
 
   return (
@@ -18,19 +24,22 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
         HELIX
       </div>
       <nav className="flex-1 px-4 space-y-2 mt-4">
-        {links.map((link) => (
-          <button
-            key={link}
-            onClick={() => setActiveTab(link)}
-            className={`block w-full text-left px-4 py-2 rounded transition-colors ${
-              activeTab === link 
-                ? 'bg-[#00D4FF]/10 text-[#00D4FF] border-l-2 border-[#00D4FF] font-semibold' 
-                : 'hover:bg-gray-800 hover:text-[#00D4FF] text-gray-400'
-            }`}
-          >
-            {link}
-          </button>
-        ))}
+        {links.map((link) => {
+          const isActive = location.pathname === link.path;
+          return (
+            <button
+              key={link.label}
+              onClick={() => navigate(link.path)}
+              className={`block w-full text-left px-4 py-2 rounded transition-colors ${
+                isActive 
+                  ? 'bg-[#00D4FF]/10 text-[#00D4FF] border-l-2 border-[#00D4FF] font-semibold' 
+                  : 'hover:bg-gray-800 hover:text-[#00D4FF] text-gray-400'
+              }`}
+            >
+              {link.label}
+            </button>
+          );
+        })}
       </nav>
       
       {/* Data Status Footer */}
@@ -45,7 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
           Last updated: {today}
         </div>
         <div className="text-center mt-2 text-[10px]">
-          v1.0.0 (Phase 2)
+          v1.0.0 (Phase 7)
         </div>
       </div>
     </div>
