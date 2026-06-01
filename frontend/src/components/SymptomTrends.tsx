@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceDot } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 interface TrendData {
   date: string;
@@ -40,6 +40,9 @@ const SymptomTrends: React.FC = () => {
 
         const rawSummary = await trendsRes.json();
         const rawSpikes = await spikesRes.json();
+
+        // Print raw summary in dev console
+        console.log('Surveillance baseline summary:', rawSummary);
 
         // Convert raw regional summary counts to historical timeline for charting
         // Generate realistic 30-day timeline back from today with realistic oscillations
