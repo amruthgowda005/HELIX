@@ -29,7 +29,7 @@ const Sidebar = () => {
         <div className="flex items-center space-x-2">
           <div className={`w-2 h-2 rounded-full ${loading ? 'bg-yellow-500 animate-pulse' : error ? 'bg-red-500' : 'bg-green-500'}`}></div>
           <span>
-            {loading ? 'Loading data...' : error ? 'Data Error' : `${total.toLocaleString()} records loaded`}
+            {loading ? 'Loading data...' : error ? 'Data Error' : `${(total ?? 0).toLocaleString()} records loaded`}
           </span>
         </div>
         <div className="text-gray-600">

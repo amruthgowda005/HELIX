@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import data
+from app.api import predictions
 import subprocess
 import sys
 
@@ -15,6 +16,7 @@ app.add_middleware(
 )
 
 app.include_router(data.router, prefix="/api/data", tags=["data"])
+app.include_router(predictions.router, prefix="/api/predictions", tags=["predictions"])
 
 @app.on_event("startup")
 async def startup_event():
