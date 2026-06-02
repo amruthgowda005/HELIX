@@ -245,3 +245,21 @@ def get_health_twin_trajectory(body: dict):
         return engine.get_trajectory(body)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/explain/outbreak")
+def explain_outbreak(body: dict):
+    from services.explainability_service import ExplainabilityService
+    svc = ExplainabilityService()
+    return svc.explain_outbreak_prediction(body.get("disease", "Unknown"), body.get("region", "Unknown"), body.get("prediction", 0.0))
+
+@app.post("/api/explain/personal-risk")
+def explain_personal(body: dict):
+    from services.explainability_service import ExplainabilityService
+    svc = ExplainabilityService()
+    return svc.explain_personal_risk(body.get("condition", "Unknown"), body.get("user_data", {}), body.get("prediction", 0.0))
+
+@app.post("/api/explain/alert")
+def explain_alert(body: dict):
+    from services.explainability_service import ExplainabilityService
+    svc = ExplainabilityService()
+    return svc.explain_alert(body)

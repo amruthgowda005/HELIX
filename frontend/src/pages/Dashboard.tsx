@@ -4,6 +4,7 @@ import EnvironmentalPanel from '../components/EnvironmentalPanel';
 import SymptomTrends from '../components/SymptomTrends';
 import RiskSummaryCard from '../components/RiskSummaryCard';
 import WearableVitalsWidget from '../components/WearableVitalsWidget';
+import ModelIntelligenceWidget from '../components/ModelIntelligenceWidget';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 interface SummaryData {
@@ -167,6 +168,7 @@ const Dashboard: React.FC = () => {
         <div className="xl:col-span-1 space-y-6">
           <RiskSummaryCard />
           <WearableVitalsWidget />
+          <ModelIntelligenceWidget />
         </div>
         <div className="xl:col-span-2 bg-[#0D1421] border border-gray-800 p-6 rounded-xl overflow-x-auto">
           <div className="mb-4">

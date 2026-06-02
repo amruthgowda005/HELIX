@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import WhyThisPrediction from '../components/WhyThisPrediction';
 
 type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
@@ -268,11 +269,14 @@ const Alerts: React.FC = () => {
                         {alert.created_at ? new Date(alert.created_at).toLocaleString() : alert.date}
                       </p>
                     </div>
+                    <div className="w-full mt-4">
+                      <WhyThisPrediction endpoint="alert" payload={alert} />
+                    </div>
                   </div>
                   <button
                     onClick={() => handleResolve(alert.id)}
                     disabled={resolving === alert.id}
-                    className="shrink-0 px-4 py-1.5 text-xs font-semibold bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:border-green-700 hover:text-green-400 transition disabled:opacity-40"
+                    className="shrink-0 px-4 py-1.5 text-xs font-semibold bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:border-green-700 hover:text-green-400 transition disabled:opacity-40 self-start"
                   >
                     {resolving === alert.id ? '...' : '✓ Resolve'}
                   </button>

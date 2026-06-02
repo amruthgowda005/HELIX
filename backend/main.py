@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import data, predictions, environment, symptoms, dashboard, alerts, personal, wearables
+from app.api import data, predictions, environment, symptoms, dashboard, alerts, personal, wearables, explain
 import asyncio
 import logging
 
@@ -25,6 +25,7 @@ app.include_router(dashboard.router,   prefix="/api/dashboard",   tags=["dashboa
 app.include_router(alerts.router,      prefix="/api/alerts",      tags=["alerts"])
 app.include_router(personal.router,    prefix="/api/personal",    tags=["personal"])
 app.include_router(wearables.router,   prefix="/api/wearables",   tags=["wearables"])
+app.include_router(explain.router,     prefix="/api/explain",     tags=["explain"])
 
 
 async def _alert_monitor_loop():

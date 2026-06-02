@@ -95,7 +95,8 @@ helix/
 - **ML Service:** Endpoints at :8001 proxied through backend at :8000. Includes `/api/environment/*`, `/api/symptoms/*`, `/api/dashboard/*`, `/api/personal/*` routes.
 - **Charting:** Recharts with historical + forecast lines, confidence bands, RMSE badges, real-time symptom trend surveillance, pathogen waveform area charts, and health twin trajectory line charts.
 - **Training:** `train_all.py` orchestrator script created for batch training all models.
+- **Explainability (XAI):** Full SHAP-based model intelligence implemented. `ExplainabilityService` provides feature impacts and plain English narratives. `WhyThisPrediction` collapsible component attached to all predictions (outbreaks, personal risk) and alerts. Dashboard includes `ModelIntelligenceWidget` showing global feature importance. `FeatureImportanceChart` created for detailed matrix views.
 
 ## Phase Tracking
-**Current Phase:** Phase 10 complete — **SET 1 COMPLETE. All Core Features Built.**
-**Next Phase:** Phase 11 (SET 2 begins) — XAI Model Explainability
+**Current Phase:** Phase 11 complete — SHAP Explainability Integrated
+**Next Phase:** Phase 12 — Validated Accuracy Metrics Dashboard

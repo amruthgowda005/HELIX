@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import WhyThisPrediction from '../components/WhyThisPrediction';
 
 const RiskGauge: React.FC<{ label: string; risk: number; riskCategory: string; factors: string[] }> = ({ label, risk, riskCategory, factors }) => {
   const percentage = Math.round(risk * 100);
@@ -64,6 +65,9 @@ const RiskGauge: React.FC<{ label: string; risk: number; riskCategory: string; f
           </ul>
         </div>
       )}
+      <div className="w-full mt-4">
+        <WhyThisPrediction endpoint="personal-risk" payload={{ condition: label, prediction: percentage, user_data: {} }} />
+      </div>
     </div>
   );
 };
