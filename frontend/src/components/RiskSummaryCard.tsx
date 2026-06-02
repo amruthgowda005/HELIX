@@ -18,12 +18,12 @@ const RiskSummaryCard: React.FC = () => {
 
   if (!riskData) {
     return (
-      <div className="bg-[#0D1421] border border-gray-800 p-6 rounded-xl flex flex-col justify-center items-center h-full text-center">
-        <h2 className="text-lg font-bold text-white mb-2">Personal Risk Profile</h2>
-        <p className="text-sm text-gray-500 mb-4">Complete your assessment to see your personal risk prediction for chronic diseases.</p>
+      <div className="glass-panel p-6 rounded-2xl flex flex-col justify-center items-center h-full text-center min-h-[220px]">
+        <h2 className="text-base font-bold text-white mb-2">Personal Risk Profile</h2>
+        <p className="text-xs text-white/50 mb-5 leading-relaxed max-w-[200px]">Complete your assessment to see your personal risk prediction.</p>
         <button 
           onClick={() => navigate('/risk')}
-          className="px-4 py-2 bg-[#00D4FF] text-black font-semibold rounded hover:bg-cyan-400 transition"
+          className="px-5 py-2.5 bg-gradient-to-r from-[#00D4FF] to-blue-500 text-black font-bold text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition shadow-[0_0_15px_rgba(0,212,255,0.3)] transform active:scale-95"
         >
           Start Assessment
         </button>
@@ -38,28 +38,33 @@ const RiskSummaryCard: React.FC = () => {
   const getColor = (risk: number) => {
     if (risk > 66) return 'text-red-400';
     if (risk > 33) return 'text-yellow-400';
-    return 'text-green-400';
+    return 'text-emerald-400 neon-glow-emerald';
   };
 
   return (
-    <div className="bg-[#0D1421] border border-gray-800 p-6 rounded-xl h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold text-white">Your Risk Profile</h2>
-        <button onClick={() => navigate('/risk')} className="text-xs text-[#00D4FF] hover:underline">View Details</button>
+    <div className="glass-panel p-6 rounded-2xl h-full flex flex-col justify-between">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg font-bold text-white tracking-wide">Personal Risk Profile</h2>
+        <button 
+          onClick={() => navigate('/risk')} 
+          className="text-xs font-bold text-[#00D4FF] hover:underline uppercase tracking-wider"
+        >
+          View Details
+        </button>
       </div>
       
-      <div className="flex-1 flex flex-col justify-around gap-2">
-        <div className="flex justify-between items-center p-3 bg-gray-900 rounded border border-gray-800">
-          <span className="text-sm text-gray-300">Diabetes</span>
-          <span className={`text-lg font-bold ${getColor(diabRisk)}`}>{diabRisk}%</span>
+      <div className="flex-1 flex flex-col gap-3.5">
+        <div className="flex justify-between items-center p-3.5 bg-gray-950/50 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+          <span className="text-xs text-white/60 font-semibold tracking-wide">Diabetes Trajectory</span>
+          <span className={`text-base font-black tech-num ${getColor(diabRisk)}`}>{diabRisk}%</span>
         </div>
-        <div className="flex justify-between items-center p-3 bg-gray-900 rounded border border-gray-800">
-          <span className="text-sm text-gray-300">Heart Disease</span>
-          <span className={`text-lg font-bold ${getColor(heartRisk)}`}>{heartRisk}%</span>
+        <div className="flex justify-between items-center p-3.5 bg-gray-950/50 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+          <span className="text-xs text-white/60 font-semibold tracking-wide">Cardiac Index</span>
+          <span className={`text-base font-black tech-num ${getColor(heartRisk)}`}>{heartRisk}%</span>
         </div>
-        <div className="flex justify-between items-center p-3 bg-gray-900 rounded border border-gray-800">
-          <span className="text-sm text-gray-300">Stroke</span>
-          <span className={`text-lg font-bold ${getColor(strokeRisk)}`}>{strokeRisk}%</span>
+        <div className="flex justify-between items-center p-3.5 bg-gray-950/50 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+          <span className="text-xs text-white/60 font-semibold tracking-wide">Stroke Probability</span>
+          <span className={`text-base font-black tech-num ${getColor(strokeRisk)}`}>{strokeRisk}%</span>
         </div>
       </div>
     </div>

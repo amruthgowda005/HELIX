@@ -19,48 +19,68 @@ const Sidebar: React.FC = () => {
   const today = new Date().toLocaleDateString();
 
   return (
-    <div className="h-screen w-64 bg-[#0A0F1E] border-r border-gray-800 text-white flex flex-col">
-      <div className="p-6 flex flex-col gap-1">
-        <span className="text-2xl font-black tracking-widest text-[#00D4FF]">HELIX</span>
-        <span className="text-[9px] uppercase tracking-[0.4em] text-[#00D4FF]/40 font-semibold">Biomedical Intelligence</span>
-      </div>
-
-      <nav className="flex-1 px-3 space-y-1 mt-2">
-        {links.map((link) => {
-          const isActive = location.pathname === link.path;
-          return (
-            <button
-              key={link.label}
-              onClick={() => navigate(link.path)}
-              className={`flex items-center gap-3 w-full text-left px-4 py-2.5 rounded-lg transition-all duration-200 text-sm ${
-                isActive 
-                  ? 'bg-[#00D4FF]/10 text-[#00D4FF] border-l-2 border-[#00D4FF] font-semibold pl-3.5' 
-                  : 'hover:bg-gray-800/60 hover:text-gray-200 text-gray-500 border-l-2 border-transparent'
-              }`}
-            >
-              <span className="text-base w-5 text-center">{link.icon}</span>
-              <span>{link.label}</span>
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* SET 1 Badge */}
-      <div className="mx-3 mb-3 px-3 py-2 bg-green-900/20 border border-green-800/40 rounded-lg">
-        <p className="text-[9px] text-green-400 font-bold uppercase tracking-widest">✅ Set 1 Complete</p>
-        <p className="text-[9px] text-gray-500 mt-0.5">Core Features Built (Phases 1–10)</p>
-      </div>
-
-      {/* Data Status Footer */}
-      <div className="p-4 border-t border-gray-800 text-xs text-gray-500 flex flex-col space-y-1">
-        <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${loading ? 'bg-yellow-500 animate-pulse' : error ? 'bg-red-500' : 'bg-green-500'}`}></div>
-          <span className="truncate">
-            {loading ? 'Loading data...' : error ? 'Data Error' : `${(total ?? 0).toLocaleString()} records`}
-          </span>
+    <div className="h-screen w-66 bg-[#060B18]/70 backdrop-blur-xl border-r border-white/5 text-white flex flex-col justify-between select-none">
+      <div>
+        {/* Brand */}
+        <div className="p-6 flex flex-col gap-1 border-b border-white/5 bg-[#00D4FF]/5">
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#00D4FF] pulse-ring-active"></div>
+            <span className="text-3xl font-black tracking-widest text-[#00D4FF] neon-glow-cyan font-display">HELIX</span>
+          </div>
+          <span className="text-[9px] uppercase tracking-[0.3em] text-white/50 font-medium">Biomedical Twin Engine</span>
         </div>
-        <div className="text-gray-600">Updated: {today}</div>
-        <div className="text-center mt-1 text-[10px] text-[#00D4FF]/40">v1.0.0 (Phase 10)</div>
+
+        {/* Navigation */}
+        <nav className="px-4 space-y-2 mt-6">
+          {links.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <button
+                key={link.label}
+                onClick={() => navigate(link.path)}
+                className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-xl transition-all duration-300 transform active:scale-95 ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-[#00D4FF]/20 to-[#00D4FF]/5 text-[#00D4FF] border border-[#00D4FF]/30 shadow-[0_0_15px_rgba(0,212,255,0.15)] font-semibold' 
+                    : 'text-gray-400 hover:text-white hover:bg-white/5 hover:translate-x-1 border border-transparent'
+                }`}
+              >
+                <span className="text-lg transition-transform duration-300 group-hover:scale-110">{link.icon}</span>
+                <span className="text-sm font-medium tracking-wide">{link.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="space-y-4">
+        {/* SET 1 Badge */}
+        <div className="mx-4 px-4 py-3 bg-gradient-to-br from-emerald-500/10 to-emerald-500/0 border border-emerald-500/20 rounded-xl">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs">⚡</span>
+            <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Set 1 Complete</p>
+          </div>
+          <p className="text-[9px] text-gray-500 mt-1 leading-relaxed">Core Predictive Models & Personal Health layer ready.</p>
+        </div>
+
+        {/* Data Status Footer */}
+        <div className="p-5 border-t border-white/5 bg-[#02050D]/40 text-xs text-gray-500 flex flex-col space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-400">Database Engine</span>
+            <div className="flex items-center space-x-1.5">
+              <div className={`w-2 h-2 rounded-full ${loading ? 'bg-yellow-500 animate-pulse' : error ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
+              <span className="font-semibold text-gray-300">
+                {loading ? 'Polling...' : error ? 'Error' : `${(total ?? 0).toLocaleString()} cells`}
+              </span>
+            </div>
+          </div>
+          <div className="flex justify-between text-[10px] text-gray-600">
+            <span>Last Sync</span>
+            <span>{today}</span>
+          </div>
+          <div className="text-center pt-2 text-[9px] text-[#00D4FF]/30 border-t border-white/5">
+            Phase 11 (XAI Standard)
+          </div>
+        </div>
       </div>
     </div>
   );

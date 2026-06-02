@@ -26,39 +26,39 @@ const WearableVitalsWidget: React.FC = () => {
 
   useEffect(() => {
     fetchWearables();
-    const interval = setInterval(fetchWearables, 10000); // 10s poll to match simulator
+    const interval = setInterval(fetchWearables, 10000);
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <div className="bg-[#0D1421] border border-gray-800 p-6 rounded-xl animate-pulse h-full">Loading vitals...</div>;
+  if (loading) return <div className="glass-panel p-6 rounded-2xl animate-pulse h-full">Loading vitals...</div>;
   if (!latest) return null;
 
   return (
-    <div className="bg-[#0D1421] border border-gray-800 p-6 rounded-xl h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+    <div className="glass-panel p-6 rounded-2xl h-full flex flex-col justify-between">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          ⌚ Live Vitals
-          <span className="flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          ⌚ Live Biometrics
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
         </h2>
-        <span className="text-[10px] text-gray-500 font-mono">ID: sim_device_1</span>
+        <span className="text-[9px] uppercase tracking-wider text-white/30 font-bold">sim_device_1</span>
       </div>
 
       <div className="flex-1 grid grid-cols-2 gap-4">
         {/* Heart Rate */}
-        <div className="bg-gray-900 border border-gray-800 p-3 rounded-lg flex flex-col justify-between">
+        <div className="bg-gray-950/50 border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-emerald-500/30 transition-colors">
           <div>
-            <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Heart Rate</span>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className={`text-2xl font-black ${latest.heart_rate > 100 ? 'text-red-400' : 'text-green-400'}`}>
+            <span className="text-[9px] uppercase text-white/40 font-bold tracking-widest">Heart Rate</span>
+            <div className="flex items-baseline gap-1 mt-1.5">
+              <span className={`text-2xl font-black tech-num ${latest.heart_rate > 100 ? 'text-red-400' : 'text-emerald-400 neon-glow-emerald'}`}>
                 {latest.heart_rate}
               </span>
-              <span className="text-[10px] text-gray-500">bpm</span>
+              <span className="text-[9px] text-white/30 font-bold uppercase">bpm</span>
             </div>
           </div>
-          <div className="h-10 w-full mt-2">
+          <div className="h-10 w-full mt-3">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trends}>
                 <YAxis domain={['dataMin - 10', 'dataMax + 10']} hide />
@@ -69,17 +69,17 @@ const WearableVitalsWidget: React.FC = () => {
         </div>
 
         {/* SpO2 */}
-        <div className="bg-gray-900 border border-gray-800 p-3 rounded-lg flex flex-col justify-between">
+        <div className="bg-gray-950/50 border border-white/5 p-4 rounded-xl flex flex-col justify-between hover:border-[#00D4FF]/30 transition-colors">
           <div>
-            <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Blood Oxygen</span>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className={`text-2xl font-black ${latest.spo2 < 95 ? 'text-orange-400' : 'text-[#00D4FF]'}`}>
+            <span className="text-[9px] uppercase text-white/40 font-bold tracking-widest">Oxygenation</span>
+            <div className="flex items-baseline gap-1 mt-1.5">
+              <span className={`text-2xl font-black tech-num ${latest.spo2 < 95 ? 'text-orange-400' : 'text-[#00D4FF] neon-glow-cyan'}`}>
                 {latest.spo2}
               </span>
-              <span className="text-[10px] text-gray-500">%</span>
+              <span className="text-[9px] text-white/30 font-bold uppercase">%</span>
             </div>
           </div>
-          <div className="h-10 w-full mt-2">
+          <div className="h-10 w-full mt-3">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trends}>
                 <YAxis domain={[90, 100]} hide />
@@ -89,15 +89,15 @@ const WearableVitalsWidget: React.FC = () => {
           </div>
         </div>
 
-        {/* Steps */}
-        <div className="col-span-2 bg-gray-900 border border-gray-800 p-3 rounded-lg flex justify-between items-center">
+        {/* Steps & Sleep */}
+        <div className="col-span-2 bg-gray-950/50 border border-white/5 p-4 rounded-xl flex justify-between items-center hover:border-white/10 transition-colors">
           <div>
-            <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider block">Daily Steps</span>
-            <span className="text-lg font-black text-white">{latest.steps.toLocaleString()}</span>
+            <span className="text-[9px] uppercase text-white/40 font-bold tracking-widest block mb-1">Daily Steps</span>
+            <span className="text-lg font-black text-white tech-num">{latest.steps.toLocaleString()}</span>
           </div>
           <div className="text-right">
-            <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider block">Sleep</span>
-            <span className="text-lg font-black text-purple-400">{latest.sleep_hours}h</span>
+            <span className="text-[9px] uppercase text-white/40 font-bold tracking-widest block mb-1">Sleep State</span>
+            <span className="text-lg font-black text-purple-400 tech-num">{latest.sleep_hours}h</span>
           </div>
         </div>
       </div>
